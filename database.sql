@@ -1,0 +1,57 @@
+CREATE TABLE Programs (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR UNIQUE NOT NULL,
+    price NUMERIC NOT NULL,
+    type VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE Modules (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    program_id BIGINT REFERENCES Programs(id) NOT NULL,
+    title VARCHAR NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(program_id, title)
+);
+
+CREATE TABLE Courses (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    module_id BIGINT REFERENCES Modules(id) NOT NULL,
+    title VARCHAR NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(module_id, title)
+);
+
+CREATE TABLE Lessons (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    course_id BIGINT REFERENCES Courses(id) NOT NULL,
+    title VARCHAR NOT NULL,
+    body TEXT NOT NULL,
+    url_video TEXT,
+    position INT NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(course_id, title)
+);
+CREATE TABLE TeachingGroups (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    slug TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE Users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    group_id BIGINT REFERENCES TeachingGroups(id) NOT NULL,
+    type VARCHAR NOT NULL,
+    name VARCHAR NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
