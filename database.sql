@@ -44,14 +44,54 @@ CREATE TABLE TeachingGroups (
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW()
 );
-
+CREATE TYPE users_type AS ENUM ('student', 'teacher', 'admin');
 CREATE TABLE Users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     group_id BIGINT REFERENCES TeachingGroups(id) NOT NULL,
-    type VARCHAR NOT NULL,
+    type users_type NOT NULL,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TYPE enrollments_type AS ENUM ('active', 'pending', 'cancelled', 'completed');
+CREATE TABLE Enrollments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id BIGINT REFERENCES Users(id) NOT NULL,
+    program_id BIGINT REFERENCES Programs(id) NOT NULL,
+    UNIQUE(user_id, program_id),
+    status enrollments_type NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TYPE payments_type AS ENUM ('pending', 'paid', 'failed', 'refunded');
+CREATE TABLE Payments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_enrollment BIGINT REFERENCES Enrollments(id) NOT NULL,
+    amount NUMERIC NOT NULL,
+    status payments_type NOT NULL,
+    date TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TYPE programcompletion_type AS ENUM ('active', 'completed', 'pending', 'cancelled');
+CREATE TABLE ProgramCompletions (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id BIGINT REFERENCES Users(id) NOT NULL,
+    program_id BIGINT REFERENCES Programs(id) NOT NULL,
+    status programcompletion_type NOT NULL,
+    start_time TIMESTAMP DEFAULT NOW() NOT NULL,
+    finish_time TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TABLE Certificates (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id BIGINT REFERENCES Users(id) NOT NULL,
+    program_id BIGINT REFERENCES Programs(id) NOT NULL,
+    url_cerf VARCHAR NOT NULL,
+    created_cerf TIMESTAMP DEFAULT NOW() NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW()
 );
