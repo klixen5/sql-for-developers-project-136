@@ -26,7 +26,6 @@ CREATE TABLE Courses (
     updated_at TIMESTAMP DEFAULT NOW(),
     UNIQUE(module_id, title)
 );
-
 CREATE TABLE Lessons (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     course_id BIGINT REFERENCES Courses(id) NOT NULL,
@@ -92,6 +91,22 @@ CREATE TABLE Certificates (
     program_id BIGINT REFERENCES Programs(id) NOT NULL,
     url_cerf VARCHAR NOT NULL,
     created_cerf TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TABLE Quizzes (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    lesson_id BIGINT REFERENCES Lessons(id) NOT NUll,
+    title VARCHAR NOT NULL,
+    body TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TABLE Exercises (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    lesson_id BIGINT REFERENCES Lessons(id) NOT NULL,
+    title VARCHAR NOT NULL,
+    url_pr VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW()
 );
