@@ -110,3 +110,20 @@ CREATE TABLE Exercises (
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW()
 );
+CREATE TABLE Discussions (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    lesson_id BIGINT REFERENCES Lessons(id) NOT NULL,
+    body TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TYPE blog_type AS ENUM ('created', 'in moderation', 'published', 'archived');
+CREATE TABLE Blog (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    student_id BIGINT REFERENCES Users(id) NOT NULL,
+    title VARCHAR NOT NULL,
+    body TEXT NOT NULL,
+    status blog_type NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
