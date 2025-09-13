@@ -35,11 +35,11 @@ CREATE TABLE course_modules (
 );
 CREATE TABLE Lessons (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    course_id BIGINT REFERENCES Courses(id) NOT NULL,
+    course_id BIGINT REFERENCES Courses(id) DEFAULT 1 NOT NULL,
     name VARCHAR NOT NULL,
     content TEXT NOT NULL,
     video_url TEXT,
-    position INT NOT NULL,
+    position INT DEFAULT 1 NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at TIMESTAMP
