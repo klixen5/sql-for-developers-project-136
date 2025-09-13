@@ -17,7 +17,11 @@ CREATE TABLE Modules (
     deleted_at TIMESTAMP,
     UNIQUE(program_id, name)
 );
-
+CREATE TABLE program_modules (
+    program_id BIGINT REFERENCES Programs(id),
+    module_id BIGINT REFERENCES Modules(id),
+    PRIMARY KEY(program_id, module_id)
+);
 CREATE TABLE Courses (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     module_id BIGINT REFERENCES Modules(id) NOT NULL,
@@ -25,7 +29,13 @@ CREATE TABLE Courses (
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
+    deleted_at TIMESTAMP,
     UNIQUE(module_id, name)
+);
+CREATE TABLE course_modules (
+    course_id BIGINT REFERENCES Courses(id),
+    module_id BIGINT REFERENCES Modules(id),
+    PRIMARY KEY(course_id, module_id)
 );
 CREATE TABLE Lessons (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -36,6 +46,7 @@ CREATE TABLE Lessons (
     position INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
+    deleted_at TIMESTAMP,
     UNIQUE(course_id, name)
 );
 CREATE TABLE Teaching_Groups (
@@ -69,7 +80,7 @@ CREATE TABLE Enrollments (
 CREATE TYPE payments_type AS ENUM ('pending', 'paid', 'failed', 'refunded');
 CREATE TABLE Payments (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_enrollment BIGINT REFERENCES Enrollments(id) NOT NULL,
+    enrollment_id BIGINT REFERENCES Enrollments(id) NOT NULL,
     amount NUMERIC NOT NULL,
     status payments_type NOT NULL,
     paid_at TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -121,7 +132,7 @@ CREATE TABLE Discussions (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 CREATE TYPE blog_type AS ENUM ('created', 'in moderation', 'published', 'archived');
-CREATE TABLE Blog (
+CREATE TABLE blogs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id BIGINT REFERENCES Users(id) NOT NULL,
     name VARCHAR NOT NULL,
