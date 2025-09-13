@@ -32,10 +32,10 @@ CREATE TABLE Lessons (
     title VARCHAR NOT NULL,
     body TEXT NOT NULL,
     url_video TEXT,
-    position INT NOT NULL UNIQUE,
+    position INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(course_id, title)
+    UNIQUE(course_id, position)
 );
 CREATE TABLE TeachingGroups (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -67,7 +67,7 @@ CREATE TABLE Enrollments (
 CREATE TYPE payments_type AS ENUM ('pending', 'paid', 'failed', 'refunded');
 CREATE TABLE Payments (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_enrollment BIGINT REFERENCES Enrollments(id) NOT NULL,
+    enrollment_id BIGINT REFERENCES Enrollments(id) NOT NULL,
     amount NUMERIC NOT NULL,
     status payments_type NOT NULL,
     date TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -89,8 +89,8 @@ CREATE TABLE Certificates (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id BIGINT REFERENCES Users(id) NOT NULL,
     program_id BIGINT REFERENCES Programs(id) NOT NULL,
-    url_cerf VARCHAR NOT NULL,
-    created_cerf TIMESTAMP DEFAULT NOW() NOT NULL,
+    certificate_url VARCHAR NOT NULL,
+    certificate_created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -120,7 +120,7 @@ CREATE TABLE Discussions (
 CREATE TYPE blog_type AS ENUM ('created', 'in moderation', 'published', 'archived');
 CREATE TABLE Blog (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    student_id BIGINT REFERENCES Users(id) NOT NULL,
+    user_id BIGINT REFERENCES Users(id) NOT NULL,
     title VARCHAR NOT NULL,
     body TEXT NOT NULL,
     status blog_type NOT NULL,
