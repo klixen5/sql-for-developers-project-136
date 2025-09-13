@@ -13,8 +13,7 @@ CREATE TABLE Modules (
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
-    deleted_at TIMESTAMP,
-    UNIQUE(program_id, name)
+    deleted_at TIMESTAMP
 );
 CREATE TABLE program_modules (
     program_id BIGINT REFERENCES Programs(id),
@@ -27,8 +26,7 @@ CREATE TABLE Courses (
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
-    deleted_at TIMESTAMP,
-    UNIQUE(module_id, name)
+    deleted_at TIMESTAMP
 );
 CREATE TABLE course_modules (
     course_id BIGINT REFERENCES Courses(id),
@@ -44,8 +42,7 @@ CREATE TABLE Lessons (
     position INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
-    deleted_at TIMESTAMP,
-    UNIQUE(course_id, name)
+    deleted_at TIMESTAMP
 );
 CREATE TABLE Teaching_Groups (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
