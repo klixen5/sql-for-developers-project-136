@@ -9,7 +9,6 @@ CREATE TABLE Programs (
 
 CREATE TABLE Modules (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    program_id BIGINT REFERENCES Programs(id) NOT NULL,
     name VARCHAR NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -24,7 +23,6 @@ CREATE TABLE program_modules (
 );
 CREATE TABLE Courses (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    module_id BIGINT REFERENCES Modules(id) NOT NULL,
     name VARCHAR NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
