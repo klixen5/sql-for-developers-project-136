@@ -57,7 +57,7 @@ CREATE TABLE Users (
     role users_type NOT NULL,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
-    password_hash VARCHAR NOT NULL,
+    password_hash VARCHAR,
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at TIMESTAMP
